@@ -4,6 +4,10 @@ export class CustomError extends Error {
     super(message);
   }
 
+  static internal(message: string) {
+    return new CustomError(500, message);
+  }
+
   static invalid(message: string) {
     return new CustomError(400, message);
   }
@@ -12,7 +16,7 @@ export class CustomError extends Error {
     return new CustomError(404, message);
   }
 
-  static conflic(message: string) {
+  static conflict(message: string) {
     return new CustomError(409, message);
   }
 

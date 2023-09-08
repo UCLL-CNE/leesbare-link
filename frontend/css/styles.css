@@ -88,3 +88,7 @@ header nav ul {
     flex-direction: column;
   }
 }
+
+#main-page p {
+  margin-bottom: 1rem;
+}

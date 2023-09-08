@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../domain/custom-error";
-import { UserService } from "../service/UserService";
+import { UserService } from "../service/user-service";
 
 export const errorHandler = (error: unknown, req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {

@@ -1,7 +1,7 @@
-import { Request, Response, Express } from "express";
-import { LinkService } from "../service/LinkService";
+import { Request, Response, Express, NextFunction } from "express";
+import { LinkService } from "../service/link-service";
 import { Link } from "../domain/link";
-import { authenticatedRoute } from "./route-factory";
+import { authenticatedRoute, wrapRoute } from "./route-factory";
 
 export const createLinkRoutes = (expressApp: Express, linkService: LinkService, userService: unknown) => {
 
@@ -9,21 +9,35 @@ export const createLinkRoutes = (expressApp: Express, linkService: LinkService, 
     throw new Error("Not all services are initialised. Exiting...");
   }
 
-  expressApp.get('/:mapping', (req, res) => {
-    const link = linkService.getLinkByMapping(req.params.mapping);
-    res.redirect(link);
+  expressApp.get('/mappings', authenticatedRoute, (req: Request, res: Response, next: NextFunction) => {
+    wrapRoute(async () => {
+      const user = req.user!;
+      const links = await linkService.getAllMappings(user);
+      res.json(links);
+    }, next);
   });
 
-  expressApp.put('/:mapping', authenticatedRoute, (req: Request, res: Response) => {
-    const user = req.user!;
-    const newLink = new Link(req.body.link, req.params.mapping, user);
-    linkService.setLink(newLink);
-    res.json(newLink);
+  expressApp.get('/:mapping', (req: Request, res: Response, next: NextFunction) => {
+    wrapRoute(async () => {
+      const link = await linkService.getLinkByMapping(req.params.mapping);
+      res.redirect(link);
+    }, next);
   });
 
-  expressApp.delete('/:mapping', authenticatedRoute, (req: Request, res: Response) => {
-    const user = req.user!;
-    linkService.removeLinkByMapping(req.params.mapping, user);
-    res.send();
-  })
+  expressApp.put('/:mapping', authenticatedRoute, (req: Request, res: Response, next: NextFunction) => {
+    wrapRoute(async () => {
+      const user = req.user!;
+      const newLink = new Link(req.body.link, req.params.mapping.toLowerCase(), user);
+      await linkService.setLink(newLink);
+      res.status(201).json(newLink);
+    }, next);
+  });
+
+  expressApp.delete('/:mapping', authenticatedRoute, (req: Request, res: Response, next: NextFunction) => {
+    wrapRoute(async () => {
+      const user = req.user!;
+      await linkService.removeLinkByMapping(req.params.mapping, user);
+      res.send();
+    }, next);
+  });
 }

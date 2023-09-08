@@ -6,7 +6,11 @@ const elements = {
   passwordInput: document.querySelector("#password"),
   passwordConfirmationInput: document.querySelector("#password-confirmation"),
   loginForm: document.querySelector("#login-form"),
-  registerForm: document.querySelector("#register-form")
+  registerForm: document.querySelector("#register-form"),
+  createForm: document.querySelector("#create-form"),
+  linkInput: document.querySelector("#link"),
+  mappingInput: document.querySelector("#mapping"),
+  linkTable: document.querySelector("#link-table"),
 }
 
 const setAuthentication = (hash) => {

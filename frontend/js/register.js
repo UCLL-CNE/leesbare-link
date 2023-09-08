@@ -21,6 +21,9 @@ const register = async () => {
 
     if (response.status !== 201) {
       alert(body.message);
+    } else {
+      setAuthentication(btoa(`${email}:${password}`));
+      window.location.replace("/dashboard.html");
     }
   }
 };
