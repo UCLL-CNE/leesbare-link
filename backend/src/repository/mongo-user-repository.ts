@@ -21,7 +21,7 @@ export class MongoUserRepository {
 
     static async getInstance() {
         if (!this.instance) {
-            const mongoClient = new MongoClient(process.env.DB_CONN_STRING || "mongodb://localhost:27017");
+            const mongoClient = new MongoClient(process.env.DB_CONN_STRING || "mongodb://root:root@mongo:27017");
             await mongoClient.connect();
             const db = mongoClient.db(process.env.DB_NAME || "ll-db");
             const collection = db.collection(process.env.USER_COLLECTION_NAME || "users");
