@@ -31,5 +31,5 @@ The application runs via *docker-compose* with the `docker-compose.yml` configur
 
 ## Architecture
 
-Througout the course we will, step-by-step, migrate this application to a serverless and cloud-native architecture.
+Throughout the course we will migrate this application step by step to a serverless, cloud-native architecture.
 Right now, it's a simple application with a backend, a frontend and a database connection.
